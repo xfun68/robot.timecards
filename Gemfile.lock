@@ -1,0 +1,32 @@
+GEM
+  remote: http://rubygems.org/
+  remote: http://ruby.taobao.org/
+  specs:
+    childprocess (0.5.1)
+      ffi (~> 1.0, >= 1.0.11)
+    ffi (1.9.3)
+    mail (2.5.4)
+      mime-types (~> 1.16)
+      treetop (~> 1.4.8)
+    mime-types (1.25.1)
+    multi_json (1.9.0)
+    polyglot (0.3.4)
+    rubyzip (1.1.0)
+    selenium-webdriver (2.40.0)
+      childprocess (>= 0.5.0)
+      multi_json (~> 1.0)
+      rubyzip (~> 1.0)
+      websocket (~> 1.0.4)
+    treetop (1.4.15)
+      polyglot
+      polyglot (>= 0.3.1)
+    watir-webdriver (0.6.8)
+      selenium-webdriver (>= 2.18.0)
+    websocket (1.0.7)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  mail
+  watir-webdriver

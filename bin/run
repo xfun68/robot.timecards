@@ -1,0 +1,11 @@
+#!/bin/bash -l
+
+echo
+
+cd ~/code/robot.timecards
+pwd
+
+date
+ruby -v
+ruby robot.rb
+
