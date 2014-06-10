@@ -5,7 +5,7 @@ A robot which sends SMS to remind people who forget to submit last week's timeca
 
 ## Setup
 
-    ```ruby
+```ruby
     $ brew install ruby-install
     $ brew install chruby
     $ ruby-install ruby 2.1.1
@@ -14,7 +14,7 @@ A robot which sends SMS to remind people who forget to submit last week's timeca
     $ cd robot.timecards
     $ bundle install
     $ crontab -l | { cat; echo "* * * * * /bin/bash -l -c '~/code/robot.timecards/bin/run >> ~/code/robot.timecards/log 2>&1'"; } | crontab -
-    ```
+```
 
 ## Configuration
 
