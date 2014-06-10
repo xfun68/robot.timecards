@@ -5,7 +5,7 @@ A robot which sends SMS to remind people who forget to submit last week's timeca
 
 ## Setup
 
-```ruby
+```bash
     $ brew install ruby-install
     $ brew install chruby
     $ ruby-install ruby 2.1.1
