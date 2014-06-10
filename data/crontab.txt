@@ -1,0 +1,2 @@
+* * * * * /bin/bash -l -c '~/code/robot.timecards/bin/run >> ~/code/robot.timecards/log 2>&1'
+

@@ -39,3 +39,4 @@ data/*
 log
 samples/
 
+!data/crontab.txt
