@@ -1,4 +1,5 @@
 require_relative './mail_actor'
+require_relative './mail_box'
 require_relative './sms'
 require_relative './missing_time_cards_parser'
 require_relative './message'
@@ -16,12 +17,18 @@ class TimeCardsReminder < MailActor
 
   def do
     email_addresses = MissingTimeCardsParser.parse @mail
-
+    send_reminding_email_to email_addresses
     send_reminding_messages_to email_addresses
     send_notifications_to_admins email_addresses
   end
 
   private
+
+  def send_reminding_email_to(email_addresses)
+    email_addresses.each do |addr|
+      MailBox.send addr, "PSA", "Timesheet Remind", Message.time_cards_remind(contact.name)
+    end
+  end
 
   def send_reminding_messages_to(email_addresses)
     contacts = []
