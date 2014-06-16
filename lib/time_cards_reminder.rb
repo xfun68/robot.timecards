@@ -17,16 +17,23 @@ class TimeCardsReminder < MailActor
 
   def do
     email_addresses = MissingTimeCardsParser.parse @mail
-    send_reminding_email_to email_addresses
+
     send_reminding_messages_to email_addresses
+    send_missing_mobile_reminding_to email_addresses
     send_notifications_to_admins email_addresses
   end
 
   private
 
-  def send_reminding_email_to(email_addresses)
-    email_addresses.each do |addr|
-      MailBox.send addr, "PSA", "Timesheet Remind", Message.time_cards_remind(contact.name)
+  def send_missing_mobile_reminding_to(email_addresses)
+    email_without_mobile = []
+    email_addresses.each do |email|
+      contact = Contact.find_by_email email
+      email_without_mobile << email unless is_available_contact? contact
+    end
+
+    email_without_mobile.each do |email|
+      MailBox.send email, "PSA", "Timesheet Remind", Message.missing_mobiles_remind(email.split('@').first)
     end
   end
 

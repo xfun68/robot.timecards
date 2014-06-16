@@ -3,6 +3,10 @@ class Message
     create_message __method__, name
   end
 
+  def self.missing_mobiles_remind(name)
+    create_message __method__, name
+  end
+
   def self.missing_mobiles(emails)
     names = emails.map { |email| email.split('@').first }
     create_message(__method__, names.join(','))
