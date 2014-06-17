@@ -59,6 +59,8 @@ class TimeCardsReminder < MailActor
     Admins.each do |admin|
       @sms.send(admin.mobile, Message.reminded_contacts(@reminded_contacts))
       @sms.send(admin.mobile, Message.missing_mobiles(emails_without_mobile)) if emails_without_mobile.any?
+      MailBox.send(admin.email, "PSA", "SMS send notification", Message.reminded_contacts(@reminded_contacts))
+      MailBox.send(admin.email, "PSA", "Missing mobiles notification", Message.missing_mobiles(emails_without_mobile)) if emails_without_mobile.any?
     end
   end
 
