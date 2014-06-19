@@ -12,7 +12,6 @@ class TimeCardsReminder < MailActor
   def initialize(mail)
     super mail
     @reminded_contacts = []
-    @sms = Sms.new SMS_SERVICE
   end
 
   def do
@@ -45,7 +44,7 @@ class TimeCardsReminder < MailActor
     end
 
     @reminded_contacts = contacts.select do |contact|
-      @sms.send contact.mobile, Message.time_cards_remind(contact.name)
+      @sms.send contact.mobile, Message.missing_time_cards_remind(contact.name)
     end
   end
 
@@ -57,10 +56,10 @@ class TimeCardsReminder < MailActor
     end
 
     Admins.each do |admin|
-      @sms.send(admin.mobile, Message.reminded_contacts(@reminded_contacts))
-      @sms.send(admin.mobile, Message.missing_mobiles(emails_without_mobile)) if emails_without_mobile.any?
-      MailBox.send(admin.email, "PSA", "SMS send notification", Message.reminded_contacts(@reminded_contacts))
-      MailBox.send(admin.email, "PSA", "Missing mobiles notification", Message.missing_mobiles(emails_without_mobile)) if emails_without_mobile.any?
+      MailBox.send(admin.email, "PSA", "SMS send notification", Message.missing_time_cards_notification(@reminded_contacts))
+      MailBox.send(admin.email, "PSA", "Missing mobiles notification", Message.missing_mobiles_notification(emails_without_mobile)) if emails_without_mobile.any?
+      @sms.send(admin.mobile, Message.missing_time_cards_notification(@reminded_contacts))
+      @sms.send(admin.mobile, Message.missing_mobiles_notification(emails_without_mobile)) if emails_without_mobile.any?
     end
   end
 

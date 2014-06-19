@@ -8,8 +8,20 @@ class MailBox
   end
 
   def self.send(receiver, sender, title, content)
+    email_of_admins = Admins.map { |admin| admin.email }
+
+    if is_debug?
+      puts "to #{receiver}"
+      puts "cc #{email_of_admins}"
+      puts "from #{sender}"
+      puts "title #{title}"
+      puts "body #{content}"
+      return
+    end
+
     Mail.deliver do
       to receiver
+      cc email_of_admins
       from sender
       subject title
       body content

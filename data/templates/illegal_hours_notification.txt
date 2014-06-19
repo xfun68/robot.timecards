@@ -1,0 +1,1 @@
+Timecards of the following twers have less than 40 hours: <_PLACEHOLDER_>.
