@@ -7,22 +7,23 @@ class MailBox
     [Mail.first].flatten.first
   end
 
-  def self.send(receiver, sender, title, content)
+  def self.send(receiver, bcc_receiver=nil, title, content)
     email_of_admins = Admins.map { |admin| admin.email }
 
     if is_debug?
       puts "to #{receiver}"
       puts "cc #{email_of_admins}"
-      puts "from #{sender}"
+      puts "bcc #{bcc_receiver}" unless bcc_receiver.nil? || bcc_receiver.empty?
+      puts "from Xia Jie Jessie <jxia@thoughtworks.com>"
       puts "title #{title}"
       puts "body #{content}"
-      return
     end
 
     Mail.deliver do
       to receiver
       cc email_of_admins
-      from sender
+      bcc bcc_receiver unless bcc_receiver.nil? || bcc_receiver.empty?
+      from "Xia Jie Jessie <jxia@thoughtworks.com>"
       subject title
       body content
     end

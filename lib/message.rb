@@ -1,4 +1,8 @@
 class Message
+  def self.time_card_status_notification(content)
+    create_message __method__, content
+  end
+
   def self.missing_time_cards_remind(name)
     create_message __method__, name
   end

@@ -2,7 +2,10 @@ require_relative './mail_actor'
 require_relative './mail_box'
 require_relative './sms'
 require_relative './missing_time_cards_parser'
+require_relative './time_card_status_parser'
 require_relative './message'
+
+require 'pry'
 
 class TimeCardsReminder < MailActor
   def self.match?(mail)
@@ -15,6 +18,9 @@ class TimeCardsReminder < MailActor
   end
 
   def do
+    time_card_status = TimeCardStatusParser.parse @mail
+    send_time_card_status time_card_status
+
     email_addresses = MissingTimeCardsParser.parse @mail
 
     send_reminding_messages_to email_addresses
@@ -24,6 +30,14 @@ class TimeCardsReminder < MailActor
 
   private
 
+  def send_time_card_status(time_card_status)
+    status = time_card_status.reduce("\n") do |content, (key, value)|
+      content += key.to_s + ": " + value.to_s + "\n"
+    end
+    MailBox.send nil, "deepinthink@gmail.com", "Missing timecard status", Message.time_card_status_notification(status)
+    binding.pry
+  end
+
   def send_missing_mobile_reminding_to(email_addresses)
     email_without_mobile = []
     email_addresses.each do |email|
@@ -32,7 +46,7 @@ class TimeCardsReminder < MailActor
     end
 
     email_without_mobile.each do |email|
-      MailBox.send email, "PSA", "Timesheet Remind", Message.missing_mobiles_remind(email.split('@').first)
+      MailBox.send email, "Timesheet Remind", Message.missing_mobiles_remind(email.split('@').first)
     end
   end
 
@@ -56,8 +70,8 @@ class TimeCardsReminder < MailActor
     end
 
     Admins.each do |admin|
-      MailBox.send(admin.email, "PSA", "SMS send notification", Message.missing_time_cards_notification(@reminded_contacts))
-      MailBox.send(admin.email, "PSA", "Missing mobiles notification", Message.missing_mobiles_notification(emails_without_mobile)) if emails_without_mobile.any?
+      MailBox.send(admin.email, "SMS send notification", Message.missing_time_cards_notification(@reminded_contacts))
+      MailBox.send(admin.email, "Missing mobiles notification", Message.missing_mobiles_notification(emails_without_mobile)) if emails_without_mobile.any?
       @sms.send(admin.mobile, Message.missing_time_cards_notification(@reminded_contacts))
       @sms.send(admin.mobile, Message.missing_mobiles_notification(emails_without_mobile)) if emails_without_mobile.any?
     end
