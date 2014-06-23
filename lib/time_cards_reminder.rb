@@ -5,8 +5,6 @@ require_relative './missing_time_cards_parser'
 require_relative './time_card_status_parser'
 require_relative './message'
 
-require 'pry'
-
 class TimeCardsReminder < MailActor
   def self.match?(mail)
      /Report: CN Missing Timecards Last Week/i =~ mail.subject
@@ -18,8 +16,10 @@ class TimeCardsReminder < MailActor
   end
 
   def do
-    time_card_status = TimeCardStatusParser.parse @mail
-    send_time_card_status time_card_status
+    if (@mail.date.wday == 2)
+      time_card_status = TimeCardStatusParser.parse @mail
+      send_time_card_status time_card_status
+    end
 
     email_addresses = MissingTimeCardsParser.parse @mail
 
@@ -35,7 +35,6 @@ class TimeCardsReminder < MailActor
       content += key.to_s + ": " + value.to_s + "\n"
     end
     MailBox.send nil, "deepinthink@gmail.com", "Missing timecard status", Message.time_card_status_notification(status)
-    binding.pry
   end
 
   def send_missing_mobile_reminding_to(email_addresses)
