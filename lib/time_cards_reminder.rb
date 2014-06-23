@@ -34,7 +34,7 @@ class TimeCardsReminder < MailActor
     status = time_card_status.reduce("\n") do |content, (key, value)|
       content += key.to_s + ": " + value.to_s + "\n"
     end
-    MailBox.send nil, "deepinthink@gmail.com", "Missing timecard status", Message.time_card_status_notification(status)
+    MailBox.send nil, "china@thoughtworks.com", "Missing timecard status", Message.time_card_status_notification(status)
   end
 
   def send_missing_mobile_reminding_to(email_addresses)
