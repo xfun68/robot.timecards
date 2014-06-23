@@ -1,2 +1,4 @@
 Your timecards of the following weeks are less than 40 hours: <_PLACEHOLDER_>.
 Please fill out the missing hours as soon as possible.
+
+如果你因为在当周入职而Timecard小于40小时，请忽略此邮件。
