@@ -17,8 +17,9 @@ class UpdateTemplate < MailActor
 
     filename = "./data/templates/#{parser.name}.txt"
     admins_file = "./data/admins.csv"
-    File.write filename, "#{parser.subject}\n\\\\\\\\\\\\\\\\\\\\\n#{parser.template}"
-    puts "Template '#{parser.name}' updated to be \n-----------------------\nSubject: #{parser.subject}\nMailBody:#{parser.template}'"
+    File.write filename, "#{parser.subject}\n\\\\\\\\\\\\\\\\\\\\\n#{parser.template}" if !parser.subject.nil? && !parser.template.nil?
+
+    puts "Template '#{parser.name}' updated to be \n-----------------------\nSubject: #{parser.subject}\nMailBody:#{parser.template}"
     File.write admins_file, parser.admins if !parser.admins.nil?
     puts "Admins are updated to be \n======================\n #{parser.admins}\n======================\n"
   end
