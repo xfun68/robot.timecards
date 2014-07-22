@@ -22,7 +22,7 @@ class HoursCheck < MailActor
     records.each do |record|
       email = record[:email]
       message = Message.illegal_hours_remind(record[:illegal_hours_weeks])
-      MailBox.send email, "Illegal Hours Timecard", message
+      MailBox.send email, get_subject('remind'), message
       contact = Contact.find_by_email email
       @sms.send contact.mobile, message if contact && contact.is_valid_chinese_mobile?
     end
@@ -30,8 +30,13 @@ class HoursCheck < MailActor
 
   def send_notifications_to_admins(records)
     Admins.each do |admin|
-      MailBox.send admin.email, "Illegal hours notification", Message.illegal_hours_notification(records)
+      MailBox.send admin.email, get_subject('notification'), Message.illegal_hours_notification(records)
     end
+  end
+
+  def get_subject(typ)
+    all = File.read("./data/templates/illegal_hours_#{typ}.txt")
+    all.to_s.split('\\\\\\\\\\')[0]
   end
 end
 

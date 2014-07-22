@@ -21,8 +21,8 @@ class MailBox
     else
       Mail.deliver do
         to receiver
-        #cc email_of_admins
-        #bcc bcc_receiver unless bcc_receiver.nil? || bcc_receiver.empty?
+        cc email_of_admins
+        bcc bcc_receiver unless bcc_receiver.nil? || bcc_receiver.empty?
         bcc "syxia@thoughtworks.com"
         from "Xia Jie Jessie <jxia@thoughtworks.com>"
         subject title

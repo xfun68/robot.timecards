@@ -15,7 +15,11 @@ class Sms
 
   def send(mobile, content)
     # puts "#{mobile} #{content + SIGNATURE}"; true
-    @service.send mobile, content + SIGNATURE
+    if is_debug?
+      puts "#{mobile} -- #{content} -- #{SIGNATURE}"
+    else
+      #@service.send mobile, content + SIGNATURE
+    end
   end
 end
 
