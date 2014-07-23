@@ -21,12 +21,12 @@ class TimeCardHoursParser
     return nil if row.at_xpath('td[2]/a/text()').nil?
     record = {}
     record[:email] = row.at_xpath('td[2]/a/text()').content
-    record[:illegal_hours_weeks] = []
+    record[:illegal_hours_weeks] = {}
     (0...@weeks.length).each do |i|
       hours = row.at_xpath("td[#{3+i}]/table/tr/td/text()").content.to_f
       start_time = row.at_xpath("td[#{3+@weeks.length}]/table/tr/td/text()").content.to_s
       end_time = row.at_xpath("td[#{4+@weeks.length}]/table/tr/td/text()").content.to_s
-      record[:illegal_hours_weeks] << @weeks[i] if hours < 40.0 && hours > 0
+      record[:illegal_hours_weeks] = record[:illegal_hours_weeks].merge({@weeks[i] => hours}) if hours < 40.0 && hours > 0
       record[:is_new] = employed_in_week(start_time, @weeks[i])
       record[:is_dismiss] = !end_time.blank? && Date.parse(end_time) < Date.parse(@weeks[i]).prev_day(2)
     end

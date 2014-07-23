@@ -21,13 +21,13 @@ class Message
     create_message __method__, names.join(', ')
   end
 
-  def self.illegal_hours_remind(weeks)
-    create_message __method__, weeks.join(', ')
+  def self.illegal_hours_remind(weeks_hours)
+    create_message __method__, weeks_hours.map{|key, value| "#{key}  #{value}hrs"}.join(", ")
   end
 
   def self.illegal_hours_notification(records)
     args = records.map do |record|
-      "\n" + record[:email].split('@').first + ' ' + record[:illegal_hours_weeks].join(', ')
+      "\n" + record[:email].split('@').first + ' ' + record[:illegal_hours_weeks].map{|key, value| "#{key}  #{value}hrs"}.join(", ")
     end
     create_message __method__, args.join("\n")
   end
