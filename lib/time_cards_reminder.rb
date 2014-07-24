@@ -60,8 +60,8 @@ class TimeCardsReminder < MailActor
       contact = Contact.find_by_email email
       contacts << contact if is_available_contact? contact
     end
-
-    @reminded_contacts = contacts.select do |contact|
+    @reminded_contacts = contacts
+    contacts.select do |contact|
       @sms.send contact.mobile, Message.missing_time_cards_remind(contact.name)
     end
   end

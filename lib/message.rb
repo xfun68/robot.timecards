@@ -37,6 +37,7 @@ class Message
 
   def self.create_message(template_name, content)
     template = load_template template_name
+    template = template.split('\\\\\\\\\\')[2].blank?? template : template.split('\\\\\\\\\\')[2]
     template.sub /<_PLACEHOLDER_>/, content
   end
 
