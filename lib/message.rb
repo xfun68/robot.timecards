@@ -27,7 +27,8 @@ class Message
 
   def self.illegal_hours_notification(records)
     args = records.map do |record|
-      "\n" + record[:email].split('@').first + ' ' + record[:illegal_hours_weeks].map{|key, value| "#{key}  #{value}hrs"}.join(", ")
+      illegal_hours_hint = record[:illegal_hours_weeks].map{|key, value| "#{key} #{value} hrs"}.join(", ")
+      "\n#{record[:email].split('@').first}  #{record[:office]}  #{illegal_hours_hint}"
     end
     create_message __method__, args.join("\n")
   end
