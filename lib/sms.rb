@@ -18,7 +18,7 @@ class Sms
     if is_debug?
       puts "#{mobile} -- #{content} -- #{SIGNATURE}"
     else
-      #@service.send mobile, content + SIGNATURE
+      @service.send mobile, content + SIGNATURE
     end
   end
 end
