@@ -13,7 +13,7 @@ class TimeCardHoursParser
     @weeks = title.map { |t| t.content }.select { |t| Date.strptime(t, "%Y-%m-%d") rescue false }
     data = table.xpath('tr')
     #@records = data.map { |row| parse_record(row) }.compact.select { |rec| !rec[:illegal_hours_weeks].empty? && !rec[:is_new] && !rec[:is_dismiss] }
-    @records = data.map { |row| parse_record(row) }.compact.select { |rec| !rec[:illegal_hours_weeks].empty? }
+    @records = data.map { |row| parse_record(row) }.compact.select { |rec| !rec[:illegal_hours_weeks].empty? || !rec[:illegal_hours_weeks].blank? }
   end
 
   private
@@ -23,7 +23,7 @@ class TimeCardHoursParser
     record = {}
     record[:email] = row.at_xpath('td[2]/a/text()').content
     record[:illegal_hours_weeks] = {}
-    record[:office] = row.at_xpath("td[1]/a/text()").content.to_s
+    record[:office] = row.at_xpath("td[1]/a/text()").content.to_s if !row.at_xpath("td[1]/a/text()").nil?
     (0...@weeks.length).each do |i|
       hours = row.at_xpath("td[#{3+i}]/table/tr/td/text()").content.to_f
       #start_time = row.at_xpath("td[#{3+@weeks.length}]/table/tr/td/text()").content.to_s

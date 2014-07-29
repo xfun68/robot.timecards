@@ -22,7 +22,7 @@ class Message
   end
 
   def self.illegal_hours_remind(weeks_hours)
-    create_message __method__, weeks_hours.map{|key, value| "#{key}  #{value}hrs"}.join(", ")
+    create_illegal_remind_message __method__, weeks_hours.map{|key, value| "#{key}  #{value}hrs"}.join(", ")
   end
 
   def self.illegal_hours_notification(records)
@@ -34,6 +34,11 @@ class Message
   end
 
   private
+
+  def self.create_illegal_remind_message(template_name, content)
+    template = load_template template_name
+    template.sub /<_PLACEHOLDER_>/, content
+  end
 
   def self.create_message(template_name, content)
     template = load_template template_name
