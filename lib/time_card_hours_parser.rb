@@ -23,7 +23,11 @@ class TimeCardHoursParser
     record = {}
     record[:email] = row.at_xpath('td[2]/a/text()').content
     record[:illegal_hours_weeks] = {}
-    record[:office] = row.at_xpath("td[1]/a/text()").content.to_s if !row.at_xpath("td[1]/a/text()").nil?
+
+    office = row.at_xpath("td[1]/a/text()").content.to_s if !row.at_xpath("td[1]/a/text()").nil?
+    @@office = office if !office.nil? && office != @@office
+    record[:office] = @@office
+
     (0...@weeks.length).each do |i|
       hours = row.at_xpath("td[#{3+i}]/table/tr/td/text()").content.to_f
       #start_time = row.at_xpath("td[#{3+@weeks.length}]/table/tr/td/text()").content.to_s
