@@ -5,6 +5,7 @@ require_relative './mail_actor'
 
 class TimeCardHoursParser
   attr_reader :records
+  @@office = String.new
 
   def parse(mail)
     doc = Nokogiri::HTML(mail.body.decoded)
