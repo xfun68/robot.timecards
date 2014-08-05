@@ -99,12 +99,5 @@ class TimeCardHoursParser
       end
     end
   end
-
-  def employed_in_week(day, last_day_of_week)
-    current = Date.parse day
-    last_day = Date.parse last_day_of_week
-    current < last_day && current > last_day.prev_day(6)
-  end
-
 end
 
