@@ -30,6 +30,11 @@ class TimeCardHoursParser
       parse_record(row)
     end
 
+    filter_new_and_dismiss_record()
+  end
+
+  private
+  def filter_new_and_dismiss_record
     @records = @records.select do |record|
       record[:illegal_hours_weeks] = record[:illegal_hours_weeks].select do |week, timecard_hours|
         start_date = Date.parse(record[:startDate])
@@ -44,7 +49,6 @@ class TimeCardHoursParser
         end
 
         work_day_this_week = actual_week_last_work_day - actual_week_start_work_day + 1
-
         work_day_this_week*8 > timecard_hours
       end
 
@@ -57,47 +61,55 @@ class TimeCardHoursParser
     return nil if row.at_xpath('td[2]/a/text()').nil? && row.at_xpath("td[#{@startDateIndex}]/text()").nil?
 
     if !row.at_xpath('td[2]/a/text()').nil?
-      record = {}
+      parse_normal_record(row)
+    else
+      parse_detail_record(row)
+    end
+  end
 
-      email = row.at_xpath('td[2]/a/text()').content if !row.at_xpath('td[2]/a/text()').nil?
-      @@email = email if !email.nil? && email != @@email
-      record[:email] = @@email
+  private
+  def parse_normal_record(row)
+    record = {}
 
+    office = row.at_xpath("td[1]/a/text()").content.to_s if !row.at_xpath("td[1]/a/text()").nil?
+    @@office = office if !office.nil? && office != @@office
+    record[:office] = @@office
 
-      record[:illegal_hours_weeks] = {}
+    email = row.at_xpath('td[2]/a/text()').content if !row.at_xpath('td[2]/a/text()').nil?
+    @@email = email if !email.nil? && email != @@email
+    record[:email] = @@email
 
-      office = row.at_xpath("td[1]/a/text()").content.to_s if !row.at_xpath("td[1]/a/text()").nil?
-      @@office = office if !office.nil? && office != @@office
-      record[:office] = @@office
-
-      (0...@weeks.length).each do |i|
-        hours = row.at_xpath("td[#{3+i}]/table/tr/td/text()").content.to_f
-        record[:illegal_hours_weeks] = record[:illegal_hours_weeks].merge({@weeks[i] => hours}) if hours < 40.0 && hours > 0
-      end
-
-      if record.nil? || record[:illegal_hours_weeks].empty? || record[:illegal_hours_weeks].blank?
-        return nil
-      else
-        @records.push(record)
-      end
-
+    record[:illegal_hours_weeks] = {}
+    (0...@weeks.length).each do |i|
+      hours = row.at_xpath("td[#{3+i}]/table/tr/td/text()").content.to_f
+      record[:illegal_hours_weeks] = record[:illegal_hours_weeks].merge({@weeks[i] => hours}) if hours < 40.0 && hours > 0
     end
 
+    if record.nil? || record[:illegal_hours_weeks].empty? || record[:illegal_hours_weeks].blank?
+      return nil
+    else
+      @records.push(record)
+    end
+  end
+
+  private
+  def parse_detail_record(row)
     if !row.at_xpath("td[#{@startDateIndex}]/text()").nil?
-      tmpRecord = @records.find{ |r| r[:email] == @@email }
-      unless tmpRecord.nil?
-        tmpRecord[:startDate] = row.at_xpath("td[#{@startDateIndex}]/text()").content
+      record = @records.find{ |r| r[:email] == @@email }
+      unless record.nil?
+        record[:startDate] = row.at_xpath("td[#{@startDateIndex}]/text()").content
       end
     end
 
     unless @lastDateIndex.nil?
       if !row.at_xpath("td[#{@lastDateIndex}]/text()").nil?
-        tmpRecord = @records.find{ |r| r[:email] == @@email }
-        unless tmpRecord.nil?
-          tmpRecord[:lastDate] = row.at_xpath("td[#{@lastDateIndex}]/text()").content
+        record = @records.find{ |r| r[:email] == @@email }
+        unless record.nil?
+          record[:lastDate] = row.at_xpath("td[#{@lastDateIndex}]/text()").content
         end
       end
     end
   end
+
 end
 
