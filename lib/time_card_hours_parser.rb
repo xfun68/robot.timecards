@@ -23,7 +23,7 @@ class TimeCardHoursParser
     titles = table.xpath('tr[2]/th/strong/text() | tr[2]/th/text()') # all the titles
     @startDateIndex = titles.map {|t| t.content}.index('Resource: Start Date') + 2
     @lastDateIndex = titles.map {|t| t.content}.index('Resource: Last Date')
-    @lastDateIndex + 2 unless @lastDateIndex.nil?
+    @lastDateIndex += 2 unless @lastDateIndex.nil?
 
     data = table.xpath('tr')
     data.each do |row|
