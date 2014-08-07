@@ -16,9 +16,16 @@ class TimeCardsReminder < MailActor
   end
 
   def do
-    if (@mail.date.wday == 2)
+    if (@mail.date.monday?)
       time_card_status = TimeCardStatusParser.parse @mail
       send_time_card_status time_card_status
+    end
+
+    if (@mail.date.tuesday?)
+      time_card_status = TimeCardStatusParser.parse @mail
+      if time_card_status.any? {|office, missing_cnt| missing_cnt != 0}
+        send_time_card_status time_card_status
+      end
     end
 
     email_addresses = MissingTimeCardsParser.parse @mail
