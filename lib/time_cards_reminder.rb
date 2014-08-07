@@ -40,9 +40,11 @@ class TimeCardsReminder < MailActor
   def send_time_card_status(time_card_status)
     status = time_card_status.reduce("\n") do |content, (key, value)|
       if value == 0
-        content += '<li>' + key.to_s + ": " + value.to_s + '</li>'
+        # content += '<li>' + key.to_s + ": " + value.to_s + '</li>'
+        content += key.to_s + ": " + value.to_s + "\n"
       else
-        content += '<li><b style="background-color:yellow;">' + key.to_s + ": " + value.to_s + '</b></li>'
+        # content += '<li><b style="background-color:yellow;">' + key.to_s + ": " + value.to_s + '</b></li>'
+        content += '*' + key.to_s + ": " + value.to_s + "\n"
       end
     end
     MailBox.send nil, "china@thoughtworks.com", get_subject, Message.time_card_status_notification(status)
