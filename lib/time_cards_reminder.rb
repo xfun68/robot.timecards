@@ -51,7 +51,7 @@ class TimeCardsReminder < MailActor
 
   def get_subject
     all = File.read("./data/templates/missing_time_cards_remind.txt")
-    all.to_s.split('\\\\\\\\\\')[0]
+    all.to_s.split('\\\\\\\\\\')[0].to_lf.gsub("\n", "")
   end
 
   def send_reminding_messages_to(email_addresses)

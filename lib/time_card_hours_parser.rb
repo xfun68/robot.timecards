@@ -17,6 +17,8 @@ class TimeCardHoursParser
     doc = Nokogiri::HTML(decodedMail)
 
     table = doc.css('table.reportTable.matrixReportTable')
+    table = table.xpath('tbody') if table.xpath('tr').length == 0 # trick for forward mail add tbody for table
+
     weekTitles = table.xpath('tr/th/text()')
     @weeks = weekTitles.map { |t| t.content }.select { |t| Date.strptime(t, "%Y-%m-%d") rescue false }
 
@@ -81,7 +83,13 @@ class TimeCardHoursParser
 
     record[:illegal_hours_weeks] = {}
     (0...@weeks.length).each do |i|
-      hours = row.at_xpath("td[#{3+i}]/table/tr/td/text()").content.to_f
+      row_at_xpath = row.at_xpath("td[#{3+i}]/table/tr/td/text()")
+      if row_at_xpath.nil?
+        hours = row.at_xpath("td[#{3+i}]/table/tbody/tr/td/text()").content.to_f
+      else
+        hours = row_at_xpath.content.to_f
+      end
+
       record[:illegal_hours_weeks] = record[:illegal_hours_weeks].merge({@weeks[i] => hours}) if hours < 40.0 && hours > 0
     end
 

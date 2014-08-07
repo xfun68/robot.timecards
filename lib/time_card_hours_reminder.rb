@@ -36,7 +36,7 @@ class HoursCheck < MailActor
 
   def get_subject(typ)
     all = File.read("./data/templates/illegal_hours_#{typ}.txt")
-    all.to_s.split('\\\\\\\\\\')[0]
+    all.to_s.split('\\\\\\\\\\')[0].to_lf.gsub("\n", '')
   end
 end
 
