@@ -25,6 +25,7 @@ class MailBox
         bcc bcc_receiver unless bcc_receiver.nil? || bcc_receiver.empty?
         from "Xia Jie Jessie <jxia@thoughtworks.com>"
         subject title
+        content_type 'text/html; charset=UTF-8'
         body content
       end
     end
