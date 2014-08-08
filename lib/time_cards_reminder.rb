@@ -4,6 +4,7 @@ require_relative './sms'
 require_relative './missing_time_cards_parser'
 require_relative './time_card_status_parser'
 require_relative './message'
+require_relative '../lib/config'
 
 class TimeCardsReminder < MailActor
   def self.match?(mail)
@@ -47,7 +48,7 @@ class TimeCardsReminder < MailActor
         content += '*' + key.to_s + ": " + value.to_s + "\n"
       end
     end
-    MailBox.send nil, "china@thoughtworks.com", get_subject, Message.time_card_status_notification(status)
+    MailBox.send nil, [ALL_CHINA_THOUGHTWORKS], get_subject("time_card_status_notification"), Message.time_card_status_notification(status)
   end
 
   def send_missing_mobile_reminding_to(email_addresses)
@@ -58,13 +59,8 @@ class TimeCardsReminder < MailActor
     end
 
     email_without_mobile.each do |email|
-      MailBox.send email, "Timesheet Remind", Message.missing_mobiles_remind(email.split('@').first)
+      MailBox.send email, RESOURCE_MANAGER_CC_GROUP, get_subject('missing_mobiles_remind'), Message.missing_mobiles_remind(email.split('@').first)
     end
-  end
-
-  def get_subject
-    all = File.read("./data/templates/missing_time_cards_remind.txt")
-    all.to_s.split('\\\\\\\\\\')[0].to_lf.gsub("\n", "")
   end
 
   def send_reminding_messages_to(email_addresses)
@@ -87,11 +83,16 @@ class TimeCardsReminder < MailActor
     end
 
     Admins.each do |admin|
-      MailBox.send(admin.email, "SMS send notification", Message.missing_time_cards_notification(@reminded_contacts))
-      MailBox.send(admin.email, "Missing mobiles notification", Message.missing_mobiles_notification(emails_without_mobile)) if emails_without_mobile.any?
+      MailBox.send(admin.email, [CHINA_OFFICEPRINCIPALS, CHINA_DELIVERY_SERVICE], get_subject("missing_time_cards_notification"), Message.missing_time_cards_notification(@reminded_contacts))
+      MailBox.send(admin.email, RESOURCE_MANAGER_CC_GROUP, get_subject("missing_mobiles_notification"), Message.missing_mobiles_notification(emails_without_mobile)) if emails_without_mobile.any?
       @sms.send(admin.mobile, Message.missing_time_cards_notification(@reminded_contacts))
       @sms.send(admin.mobile, Message.missing_mobiles_notification(emails_without_mobile)) if emails_without_mobile.any?
     end
+  end
+
+  def get_subject(typ)
+    all = File.read("./data/templates/#{typ}.txt")
+    all.to_s.split('\\\\\\\\\\')[0].to_lf.gsub("\n", '')
   end
 
   def is_available_contact?(contact)

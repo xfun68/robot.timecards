@@ -20,6 +20,8 @@ build/
 /_yardoc/
 /doc/
 /rdoc/
+/test/
+/debug.log
 
 ## Environment normalisation:
 /.bundle/

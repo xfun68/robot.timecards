@@ -22,7 +22,7 @@ class Message
   end
 
   def self.illegal_hours_remind(weeks_hours)
-    create_message __method__, weeks_hours.map{|key, value| "#{key}  #{value}hrs"}.join(", ")
+    create_message __method__, weeks_hours.map{|key, value| "#{key} submitted  #{value}hrs"}.join("\n")
   end
 
   def self.illegal_hours_notification(records)

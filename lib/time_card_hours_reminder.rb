@@ -1,5 +1,6 @@
 require_relative './mail_actor'
 require_relative './time_card_hours_parser'
+require_relative '../lib/config'
 
 class HoursCheck < MailActor
   def self.match?(mail)
@@ -22,16 +23,14 @@ class HoursCheck < MailActor
     records.each do |record|
       email = record[:email]
       message = Message.illegal_hours_remind(record[:illegal_hours_weeks])
-      MailBox.send email, get_subject('remind'), message
-      contact = Contact.find_by_email email
+      MailBox.send email, RESOURCE_MANAGER_CC_GROUP, get_subject('remind'), message
+      # contact = Contact.find_by_email email
       #@sms.send contact.mobile, message if contact && contact.is_valid_chinese_mobile?
     end
   end
 
   def send_notifications_to_admins(records)
-    Admins.each do |admin|
-      MailBox.send admin.email, get_subject('notification'), Message.illegal_hours_notification(records)
-    end
+    MailBox.send [CHINA_OFFICEPRINCIPALS, CHINA_DELIVERY_SERVICE], get_subject('notification'), Message.illegal_hours_notification(records)
   end
 
   def get_subject(typ)
