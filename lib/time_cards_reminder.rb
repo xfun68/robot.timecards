@@ -59,7 +59,7 @@ class TimeCardsReminder < MailActor
     end
 
     email_without_mobile.each do |email|
-      MailBox.send email, RESOURCE_MANAGER_CC_GROUP, get_subject('missing_mobiles_remind'), Message.missing_mobiles_remind(email.split('@').first)
+      MailBox.send email, RESOURCE_MANAGER_GROUP, get_subject('missing_mobiles_remind'), Message.missing_mobiles_remind(email.split('@').first)
     end
   end
 
@@ -85,7 +85,7 @@ class TimeCardsReminder < MailActor
     Admins.each do |admin|
       MailBox.send([CHINA_OFFICEPRINCIPALS, CHINA_DELIVERY_SERVICE], get_subject("missing_time_cards_notification"), Message.missing_time_cards_notification(@reminded_contacts))
       if emails_without_mobile.any?
-        MailBox.send(admin.email, RESOURCE_MANAGER_CC_GROUP, get_subject("missing_mobiles_notification"), Message.missing_mobiles_notification(emails_without_mobile))
+        MailBox.send(RESOURCE_MANAGER_GROUP, get_subject("missing_mobiles_notification"), Message.missing_mobiles_notification(emails_without_mobile))
       end
       @sms.send(admin.mobile, Message.missing_time_cards_notification(@reminded_contacts))
       @sms.send(admin.mobile, Message.missing_mobiles_notification(emails_without_mobile)) if emails_without_mobile.any?
