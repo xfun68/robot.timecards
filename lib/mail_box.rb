@@ -15,7 +15,7 @@ class MailBox
       puts "to #{receiver}"
       puts "cc #{email_of_admins}"
       puts "bcc #{bcc_receiver}" unless bcc_receiver.nil? || bcc_receiver.empty?
-      puts "from Xia Jie Jessie <jxia@thoughtworks.com>"
+      puts "from China.Timecard Reminder <timecard-test@thoughtworks.com>"
       puts "title #{title}"
       puts "body #{content}"
     else
@@ -23,7 +23,7 @@ class MailBox
         to receiver
         cc email_of_admins
         bcc bcc_receiver unless bcc_receiver.nil? || bcc_receiver.empty?
-        from "Xia Jie Jessie <jxia@thoughtworks.com>"
+        from "China.Timecard Reminder <timecard-test@thoughtworks.com>"
         subject title
         # content_type 'text/html; charset=UTF-8'
         body content
