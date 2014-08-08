@@ -9,7 +9,9 @@ class Message
 
   def self.missing_time_cards_notification(contacts)
     names = contacts.map { |contact| contact.email }.map { |email| email.split('@').first }
-    create_message __method__, names.join(', ')
+    names_str = names.join(', ')
+    names_str = '无' if names_str.empty?
+    create_message __method__, names_str
   end
 
   def self.missing_mobiles_remind(name)

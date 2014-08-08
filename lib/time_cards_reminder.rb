@@ -48,7 +48,7 @@ class TimeCardsReminder < MailActor
         content += '*' + key.to_s + ": " + value.to_s + "\n"
       end
     end
-    MailBox.send nil, [ALL_CHINA_THOUGHTWORKS], get_subject("time_card_status_notification"), Message.time_card_status_notification(status)
+    MailBox.send nil, nil, [ALL_CHINA_THOUGHTWORKS], get_subject("time_card_status_notification"), Message.time_card_status_notification(status)
   end
 
   def send_missing_mobile_reminding_to(email_addresses)
@@ -83,8 +83,10 @@ class TimeCardsReminder < MailActor
     end
 
     Admins.each do |admin|
-      MailBox.send(admin.email, [CHINA_OFFICEPRINCIPALS, CHINA_DELIVERY_SERVICE], get_subject("missing_time_cards_notification"), Message.missing_time_cards_notification(@reminded_contacts))
-      MailBox.send(admin.email, RESOURCE_MANAGER_CC_GROUP, get_subject("missing_mobiles_notification"), Message.missing_mobiles_notification(emails_without_mobile)) if emails_without_mobile.any?
+      MailBox.send([CHINA_OFFICEPRINCIPALS, CHINA_DELIVERY_SERVICE], get_subject("missing_time_cards_notification"), Message.missing_time_cards_notification(@reminded_contacts))
+      if emails_without_mobile.any?
+        MailBox.send(admin.email, RESOURCE_MANAGER_CC_GROUP, get_subject("missing_mobiles_notification"), Message.missing_mobiles_notification(emails_without_mobile))
+      end
       @sms.send(admin.mobile, Message.missing_time_cards_notification(@reminded_contacts))
       @sms.send(admin.mobile, Message.missing_mobiles_notification(emails_without_mobile)) if emails_without_mobile.any?
     end
