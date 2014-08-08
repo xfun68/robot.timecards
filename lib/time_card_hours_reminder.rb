@@ -23,7 +23,7 @@ class HoursCheck < MailActor
     records.each do |record|
       email = record[:email]
       message = Message.illegal_hours_remind(record[:illegal_hours_weeks])
-      MailBox.send email, RESOURCE_MANAGER_GROUP.push(CHINA_OFFICEPRINCIPALS), get_subject('remind'), message
+      MailBox.send email, OP_AND_RM, get_subject('remind'), message
       # contact = Contact.find_by_email email
       #@sms.send contact.mobile, message if contact && contact.is_valid_chinese_mobile?
     end

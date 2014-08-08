@@ -48,7 +48,7 @@ class TimeCardsReminder < MailActor
         content += '*' + key.to_s + ": " + value.to_s + "\n"
       end
     end
-    MailBox.send nil, nil, [ALL_CHINA_THOUGHTWORKS], get_subject("time_card_status_notification"), Message.time_card_status_notification(status)
+    MailBox.send nil, OP_AND_RM, [ALL_CHINA_THOUGHTWORKS], get_subject("time_card_status_notification"), Message.time_card_status_notification(status)
   end
 
   def send_missing_mobile_reminding_to(email_addresses)
