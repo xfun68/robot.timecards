@@ -1,3 +1,4 @@
-Illegal Hours Notification
+Timecard小时数不足40小时的人员名单
 \\\\\\\\\\
-Timecards of the following twers are less than 40 hours: <_PLACEHOLDER_>.
+下列人员的最近三周有Timecard小时数不满40。提醒邮件已经发送给他们，请知悉。
+<_PLACEHOLDER_>

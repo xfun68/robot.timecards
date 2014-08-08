@@ -1,6 +1,11 @@
-Illegal Hours Timecard
+The total hours of your timecard is less than 40. Please fill out the missing hours. Timecard小时数不足，请尽快补齐
 \\\\\\\\\\
-Your timecards of the following weeks are less than 40 hours: <_PLACEHOLDER_>.
+Hi,
+
+Your timecards of the following weeks are less than 40 hours:
+
+<_PLACEHOLDER_>.
+
 Please fill out the missing hours as soon as possible.
 
-如果你因为在当周入职而Timecard小于40小时，请忽略此邮件。
+Thanks!

@@ -1,1 +1,9 @@
-Dear <_PLACEHOLDER_>, your last week's timecards are still missing, and we can't find your mobile on contacts.
+Please submit your timecard 请提交上周Timecard，并在通讯录中填写你的手机号码
+\\\\\\\\\\
+Hi <_PLACEHOLDER_>,
+
+Your last week's timecards are still missing, please submit as soon as possible.
+
+We were not able to send your a reminder sms because your mobile phone number is missing in ThoughtWorks Contacts. Please fill out your mobile phone number in: https://contacts.thoughtworks.com/
+
+Thanks!
