@@ -82,11 +82,12 @@ class TimeCardsReminder < MailActor
       emails_without_mobile << email unless is_available_contact? contact
     end
 
+    MailBox.send([CHINA_OFFICEPRINCIPALS, CHINA_DELIVERY_SERVICE], get_subject("missing_time_cards_notification"), Message.missing_time_cards_notification(@reminded_contacts))
+    if emails_without_mobile.any?
+      MailBox.send(RESOURCE_MANAGER_GROUP, get_subject("missing_mobiles_notification"), Message.missing_mobiles_notification(emails_without_mobile))
+    end
+
     Admins.each do |admin|
-      MailBox.send([CHINA_OFFICEPRINCIPALS, CHINA_DELIVERY_SERVICE], get_subject("missing_time_cards_notification"), Message.missing_time_cards_notification(@reminded_contacts))
-      if emails_without_mobile.any?
-        MailBox.send(RESOURCE_MANAGER_GROUP, get_subject("missing_mobiles_notification"), Message.missing_mobiles_notification(emails_without_mobile))
-      end
       @sms.send(admin.mobile, Message.missing_time_cards_notification(@reminded_contacts))
       @sms.send(admin.mobile, Message.missing_mobiles_notification(emails_without_mobile)) if emails_without_mobile.any?
     end
