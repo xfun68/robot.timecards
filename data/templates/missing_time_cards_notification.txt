@@ -1,4 +1,5 @@
 Missing Timecard短信发送名单
 \\\\\\\\\\
-Missing timecard的短信提醒已发送给下列人员：<_PLACEHOLDER_>.
+Missing timecard的短信提醒已发送给下列人员：
+<_PLACEHOLDER_>.
 
