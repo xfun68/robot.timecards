@@ -4,6 +4,6 @@ Hi <_PLACEHOLDER_>,
 
 Your last week's timecards are still missing, please submit as soon as possible.
 
-We were not able to send your a reminder sms because your mobile phone number is missing in ThoughtWorks Contacts. Please fill out your mobile phone number in: https://contacts.thoughtworks.com/
+We were not able to send you a reminder sms because your mobile phone number is missing in ThoughtWorks Contacts. Please fill out your mobile phone number in: https://contacts.thoughtworks.com/
 
 Thanks!
