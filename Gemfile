@@ -4,4 +4,5 @@ source 'http://ruby.taobao.org/'
 
 gem 'mail'
 gem 'watir-webdriver'
+gem 'nokogiri'
 

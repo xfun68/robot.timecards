@@ -1,5 +1,6 @@
 *.gem
 *.rbc
+/.idea
 /.config
 /coverage/
 /InstalledFiles
@@ -19,6 +20,8 @@ build/
 /_yardoc/
 /doc/
 /rdoc/
+/test/
+/debug.log
 
 ## Environment normalisation:
 /.bundle/

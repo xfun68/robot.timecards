@@ -1,4 +1,5 @@
 require_relative './mail_actor'
+require_relative '../lib/utility/my_logger'
 
 class UnknownMailActor < MailActor
   def self.match?(mail)
@@ -6,8 +7,6 @@ class UnknownMailActor < MailActor
   end
 
   def do
-    Admins.each do |admin|
-      Sms.new(SMS_SERVICE).send admin.mobile, "Unknown email: '#{@mail.subject}'."
-    end
+    MyLogger.instance.warn 'Unknow email: #{@mail.subject}'
   end
 end

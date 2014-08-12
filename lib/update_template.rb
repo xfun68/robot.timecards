@@ -10,14 +10,18 @@ class UpdateTemplate < MailActor
     parser = TemplateUpdateParser.new
     parser.parse @mail
 
-    if (parser.name.nil? || parser.template.nil?)
+    if parser.name.nil?
       puts 'Update template failed.'
       return
     end
 
     filename = "./data/templates/#{parser.name}.txt"
-    File.write filename, parser.template
-    puts "Template '#{parser.name}' updated to be '#{parser.template}'"
+    admins_file = "./data/admins.csv"
+    File.write filename, "#{parser.subject}\n\\\\\\\\\\\\\\\\\\\\\n#{parser.template}" if !parser.subject.nil? && !parser.template.nil?
+
+    puts "Template '#{parser.name}' updated to be \n-----------------------\nSubject: #{parser.subject}\nMailBody:#{parser.template}"
+    File.write admins_file, parser.admins if !parser.admins.nil?
+    puts "Admins are updated to be \n======================\n #{parser.admins}\n======================\n"
   end
 end
 

@@ -1,22 +1,45 @@
 class Message
-  def self.time_cards_remind(name)
+  def self.time_card_status_notification(content)
+    create_message __method__, content
+  end
+
+  def self.missing_time_cards_remind(name)
     create_message __method__, name
   end
 
-  def self.missing_mobiles(emails)
-    names = emails.map { |email| email.split('@').first }
-    create_message(__method__, names.join(','))
+  def self.missing_time_cards_notification(contacts)
+    names = contacts.map { |contact| contact.email }.map { |email| email.split('@').first }
+    names_str = names.join(', ')
+    names_str = '无' if names_str.empty?
+    create_message __method__, names_str
   end
 
-  def self.reminded_contacts(contacts)
-    names = contacts.map { |contact| contact.email }.map { |email| email.split('@').first }
-    create_message(__method__, names.join(','))
+  def self.missing_mobiles_remind(name)
+    create_message __method__, name
+  end
+
+  def self.missing_mobiles_notification(emails)
+    names = emails.map { |email| email.split('@').first }
+    create_message __method__, names.join(', ')
+  end
+
+  def self.illegal_hours_remind(weeks_hours)
+    create_message __method__, weeks_hours.map{|key, value| "#{key} submitted  #{value}hrs"}.join("\n")
+  end
+
+  def self.illegal_hours_notification(records)
+    args = records.map do |record|
+      illegal_hours_hint = record[:illegal_hours_weeks].map{|key, value| "#{key} #{value} hrs"}.join(", ")
+      "\n#{record[:email].split('@').first}  #{record[:office]}  #{illegal_hours_hint}"
+    end
+    create_message __method__, args.join("\n")
   end
 
   private
 
   def self.create_message(template_name, content)
     template = load_template template_name
+    template = template.split('\\\\\\\\\\')[2].blank?? template : template.split('\\\\\\\\\\')[2]
     template.sub /<_PLACEHOLDER_>/, content
   end
 

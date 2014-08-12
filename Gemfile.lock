@@ -9,7 +9,10 @@ GEM
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
     mime-types (1.25.1)
+    mini_portile (0.6.0)
     multi_json (1.9.0)
+    nokogiri (1.6.2.1)
+      mini_portile (= 0.6.0)
     polyglot (0.3.4)
     rubyzip (1.1.0)
     selenium-webdriver (2.40.0)
@@ -29,4 +32,5 @@ PLATFORMS
 
 DEPENDENCIES
   mail
+  nokogiri
   watir-webdriver

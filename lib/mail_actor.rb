@@ -1,6 +1,6 @@
 class MailActor
   def self.create_by(mail)
-    actors = [NoMailActor, TimeCardsReminder, UpdateTemplate, UpdateContact, UnknownMailActor]
+    actors = [NoMailActor, TimeCardsReminder, HoursCheck, UpdateTemplate, UpdateContact, UnknownMailActor]
     actors.each do |actor|
       return actor.new(mail) if actor.match?(mail)
     end
@@ -13,6 +13,7 @@ class MailActor
   def initialize(mail)
     @mail = mail
     archive if @mail
+    @sms = Sms.new SMS_SERVICE
   end
 
   def archive

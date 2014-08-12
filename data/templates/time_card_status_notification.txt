@@ -1,0 +1,14 @@
+Missing timecard status of each office for last week
+\\\\\\\\\\
+*Bcc to China*
+
+Missing timecard status of each office:
+
+<_PLACEHOLDER_>
+
+Missing timecard report details:
+https://na3.salesforce.com/00O50000003ZlbF
+
+如果你觉得自己已经提交了，但名字还显示在missing timecard report上，请检查是否选择了正确的timecard时间，或者是否只是Save没有Submit。
+
+请注意提交正确和足够的小时数，休假时间也需填入（半天4小时，全天8小时）。

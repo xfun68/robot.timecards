@@ -10,5 +10,4 @@ git clone https://github.com/xfun68/robot.timecards.git
 cd robot.timecards
 
 bundle install
-crontab -l | { cat; echo "* * * * * /bin/bash -l -c '~/code/robot.timecards/bin/run >> ~/code/robot.timecards/log 2>&1'"; } | crontab -
-
+crontab -l | { cat; echo "*/2 * * * * /bin/bash -l -c '~/code/robot.timecards/bin/run >> ~/code/robot.timecards/log 2>&1'"; } | crontab -
